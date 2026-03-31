@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: supersecret
+    volumes:
+      - /var/lib/postgresql
+
+  server:
+    build: ./server
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+  client:
+    build: ./client
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
