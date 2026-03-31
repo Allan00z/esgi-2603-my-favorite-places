@@ -1,12 +1,23 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
 on:
   push:
     branches: 
       - main
       - master
+
 jobs:
   Docker-CI:
     runs-on: ubuntu-latest
     steps:
-      - run: docker compose up -d
+      # 1️⃣ Checkout du repo
+      - uses: actions/checkout@v4
+
+      # 2️⃣ Debug optionnel : vérifier les fichiers
+      - name: List files
+        run: ls -la
+
+      # 3️⃣ Lancer Docker Compose
+      - name: Start containers
+        run: docker compose up -d
