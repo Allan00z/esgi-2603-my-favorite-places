@@ -8,16 +8,36 @@ on:
       - master
 
 jobs:
-  Docker-CI:
+  Test:
     runs-on: ubuntu-latest
     steps:
       # 1️⃣ Checkout du repo
       - uses: actions/checkout@v4
 
-      # 2️⃣ Debug optionnel : vérifier les fichiers
-      - name: List files
-        run: ls -la
+      # 2️⃣ Setup Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-      # 3️⃣ Lancer Docker Compose
-      - name: Start containers
-        run: docker compose up -d
+      # 3️⃣ Installation des dépendances du serveur
+      - name: Install dependencies
+        run: cd server && npm install
+
+      # 4️⃣ Exécution des tests
+      - name: Run tests
+        run: cd server && npm test
+
+  Docker-CI:
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      # 1️⃣ Checkout du repo
+      - uses: actions/checkout@v4
+
+      # 2️⃣ Builder les images Docker
+      - name: Build Docker images
+        run: docker compose build
+
+      # 3️⃣ Logs de succès
+      - name: Build successful
+        run: echo "✅ Docker images built successfully"
