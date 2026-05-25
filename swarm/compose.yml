@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  manager:
+    image: docker:dind
+    container_name: manager
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - dind-net
+
+  node1:
+    image: docker:dind
+    container_name: node1
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - dind-net
+
+  node2:
+    image: docker:dind
+    container_name: node2
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - dind-net
+
+  node3:
+    image: docker:dind
+    container_name: node3
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - dind-net
+
+networks:
+  dind-net:
+    driver: bridge
